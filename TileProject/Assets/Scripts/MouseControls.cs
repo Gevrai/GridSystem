@@ -8,6 +8,8 @@ public class MouseControls : MonoBehaviour
     public GameObject gameCam;
     private Camera cam;
 
+    public Vector3 selectedTile;
+
     void Start()
     {
         cam = gameCam.GetComponent<Camera>();
@@ -15,15 +17,15 @@ public class MouseControls : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Input.GetKey("left ctrl"))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow, 3.0f);
             if(Physics.Raycast(ray, out hit, 1000.0f, 9))
             {
                 hit.collider.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.red);
+                selectedTile = hit.collider.GetComponent<Transform>().position;
             }
         }
     }
-
 }
