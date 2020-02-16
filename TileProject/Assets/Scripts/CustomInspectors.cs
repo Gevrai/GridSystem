@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TileManager))]
+[CustomEditor(typeof(GridManager))]
 public class CustomInspectors : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
+        GridManager gridManager = (GridManager)target;
 
-        TileManager tileManager = (TileManager)target;
-        if(GUILayout.Button("Find Neighbours"))
+        GUILayout.BeginHorizontal();
+        /*if (GUILayout.Button("Find Neighbours", GUILayout.ExpandWidth(false)))
         {
-            tileManager.FindNeighbours();
+            gridManager.FindNeighbours();
+        }*/
+        if (GUILayout.Button("Clear Grid", GUILayout.ExpandWidth(false)))
+        {
+            gridManager.ClearGrid();
         }
+        GUILayout.EndHorizontal();
 
     }
 }

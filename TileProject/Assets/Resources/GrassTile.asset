@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cf32d89f74ad054d948cfd688175f98, type: 3}
-  m_Name: NewtTile
+  m_Name: GrassTile
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
   tileState: 0
