@@ -152,13 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f6afc8575ab1d4e844adc61f88c268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: 2
-  row: 1
+  col: 10
+  row: 10
   spriteWidth: 0
   spriteHeight: 0
+  gridPoints: []
   drawGrid: 1
   genTiles: 1
-  spawnChance: 1
+  spawnChance: 0.522
   topDownCam: {fileID: 963194225}
   tiles: []
 --- !u!4 &311008681
@@ -189,9 +190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseLeftDown: {fileID: 8300000, guid: 50b8a9e559505594ca5a85f0711e90a9, type: 3}
   mouseLeftUp: {fileID: 8300000, guid: f3cf4019d0479344c9fe2dc84904041a, type: 3}
-  sprWidth: 0
-  sprHeight: 0
-  tilePivotPos: {x: 0, y: 0, z: 0}
+  gridUnitWidth: 0
+  gridUnitHeight: 0
 --- !u!82 &311008683
 AudioSource:
   m_ObjectHideFlags: 0

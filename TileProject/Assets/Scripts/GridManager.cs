@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     [HideInInspector] public float spriteWidth;
     [HideInInspector] public float spriteHeight;
 
-    public GridPoints[,] gridPoints;
+    public GridPoints[] gridPoints;
     public bool drawGrid;
     public bool genTiles;
     [Range(0.0f, 1.0f)] public float spawnChance = 1.0f;
@@ -41,7 +41,7 @@ public class GridManager : MonoBehaviour
         public GameObject tile;
         public Vector2[] neighbours;
 
-        public GridPoints(int col, int row, Vector3 position)
+        public GridPoints(int GridUID, int col, int row, Vector3 position)
         {
             gridUID = SetGridPointUID(col, row);
             this.col = col;
@@ -86,29 +86,29 @@ public class GridManager : MonoBehaviour
 
     public void GenGrid()
     {
-        gridPoints = new GridPoints[col, row];
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++)
-            {
-                gridPoints[i, j] = new GridPoints(i, j, new Vector3(i * spriteWidth, 0.0f, j * -spriteHeight));
-            }
+        gridPoints = new GridPoints[col * row];
+        for (int i = 0; i < gridPoints.Length; i++) 
+        {
+            int xPos = i % col;
+            int zPos = (int)Mathf.Floor(i / col);
+            Vector3 position = new Vector3(xPos * spriteWidth, 0.0f, zPos * -spriteHeight);
+
+            gridPoints[i] = new GridPoints(i, xPos, zPos, position);
         }
-        if(drawGrid) DrawGrid();
+        if (drawGrid) DrawGrid();
     }
 
     public void GenTiles()
     {
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++)
+        for (int i = 0; i < (col * row); i++) 
+        {
+            float a = Random.Range(0.0f, 1.0f);
+            if(a < spawnChance)
             {
-                float a = Random.Range(0.0f, 1.0f);
-                if(a < spawnChance)
-                {
-                    Vector3 worldPos = gridPoints[i, j].position;
-                    gridPoints[i, j].tile = (GameObject)Instantiate(referenceTile, worldPos, referenceTile.transform.rotation, transform);
-                    gridPoints[i, j].tile.layer = 8;
-                    SetTileColor(i, j); // temporary, for testing
-                }
+                Vector3 worldPos = gridPoints[i].position;
+                gridPoints[i].tile = (GameObject)Instantiate(referenceTile, worldPos, referenceTile.transform.rotation, transform);
+                gridPoints[i].tile.layer = 8;
+                SetTileColor(i); // temporary, for testing
             }
         }
     }
@@ -139,29 +139,27 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void SetTileColor(int i, int j) // Temporary, for testing.
+    private void SetTileColor(int i) // Temporary, for testing.
     {
         int rnd = Random.Range(0, 2);
         if (rnd == 0)
         {
-            gridPoints[i, j].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.green);
-            gridPoints[i, j].state = GridPoints.PointState.walkable;
+            gridPoints[i].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.green);
+            gridPoints[i].state = GridPoints.PointState.walkable;
         }
         else
         {
-            gridPoints[i, j].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.gray);
-            gridPoints[i, j].state = GridPoints.PointState.blocked;
+            gridPoints[i].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.gray);
+            gridPoints[i].state = GridPoints.PointState.blocked;
         }
     }
 
     public void ClearGrid()
     {
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++)
-            {
-                gridPoints[i, j].state = GridPoints.PointState.walkable;
-                Destroy(gridPoints[i, j].tile);
-            }
+        for (int i = 0; i < col; i++) 
+        {
+            gridPoints[i].state = GridPoints.PointState.walkable;
+            Destroy(gridPoints[i].tile);
         }
     }
 
@@ -179,7 +177,6 @@ public class GridManager : MonoBehaviour
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
     }
-
     /*
     private void SaveGridDatatoJson()
     {

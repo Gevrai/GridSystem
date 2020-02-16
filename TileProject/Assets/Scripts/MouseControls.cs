@@ -2,125 +2,162 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* MERGE WITH GRID MANAGER?
+ * Shold this be merged with the grid manager? I split those up because they have inputs check within them.
+ * If I wa using the new Unity input system which uses action and remove the need to check for input within the update loop,
+ * I would have definitely never made up two classes.
+*/
+
 public class MouseControls : MonoBehaviour
 {
-    private bool isTargetValid;
-    private GridManager tileMan;
-    private Vector3 mouseDownPos;
+    private GridManager gridManager;
+    private bool isWithinGrid;
+    private bool isHoldingTile;
+    private Vector3 clickPosition;
+    private Vector3 initialTilePos;
     private Vector3 currMousePos;
-    private Vector3 tilePos;
-    private GameObject activeTile;
-    private Vector2 gridPos;
-    private Vector2 currGridPos;
+    private GameObject selectedTile;
+    private int initialGridPoint;
+    private int targetGridPoint;
     private AudioSource audioSource;
     public AudioClip mouseLeftDown;
     public AudioClip mouseLeftUp;
 
-    [HideInInspector] public float sprWidth;
-    [HideInInspector] public float sprHeight;
+    [HideInInspector] public float gridUnitWidth;
+    [HideInInspector] public float gridUnitHeight;
 
-    [HideInInspector] public Vector3 tilePivotPos; // Needed bc TimeManager has a function to find it's neighbours
     private SpriteRenderer spriteAlpha;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        tileMan = GetComponent<GridManager>();
+        gridManager = GetComponent<GridManager>();
 
-        sprHeight = tileMan.spriteHeight;
-        sprWidth = tileMan.spriteWidth;
+        gridUnitWidth = gridManager.spriteWidth;
+        gridUnitHeight = gridManager.spriteHeight;
     }
 
     void Update()
     {
         OnClick(Input.GetMouseButtonDown(0));
-        if (isTargetValid)
-        {
-            OnMouseHold(Input.GetMouseButton(0));
-            OnRelease(Input.GetMouseButtonUp(0));
-        }
+        OnMouseHold(Input.GetMouseButton(0));
+        OnRelease(Input.GetMouseButtonUp(0));
     }
 
     private void OnClick(bool mouseDown)
     {
         if(mouseDown)
         {
-            // Find in what position in the grid array our mouse position correlate to
-            mouseDownPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float gridCol = Mathf.Floor(mouseDownPos.x / sprWidth);
-            float gridRow = Mathf.Abs(Mathf.Ceil(mouseDownPos.z / sprHeight));
-            gridPos = new Vector2(gridCol, gridRow);
-
-            // If array tile val not null, set valid && get tile GO.pos
-            if (tileMan.gridPoints[(int)gridPos.x, (int)gridPos.y].tile != null)
+            clickPosition = GetMousePos(Camera.main, gridUnitWidth, gridUnitHeight, out isWithinGrid);
+            if(isWithinGrid)
             {
-                isTargetValid = true;
-                activeTile = tileMan.gridPoints[(int)gridPos.x, (int)gridPos.y].tile;
-                tilePivotPos = activeTile.GetComponent<Transform>().position;
+                initialGridPoint = WorldPosToGridPoint(clickPosition, gridUnitWidth, gridUnitHeight);
+                if (gridManager.gridPoints[initialGridPoint].tile != null)
+                {
+                    isHoldingTile = true;
+                    selectedTile = gridManager.gridPoints[initialGridPoint].tile;
+                    initialTilePos = selectedTile.GetComponent<Transform>().position;
 
-                ChangeAlpha(0.5f);
-                PlaySound(mouseLeftDown);
+                    ChangeTileAlpha(0.5f);
+                    PlayAudioClip(mouseLeftDown);
+                }
             }
         }
     }
 
     private void OnMouseHold(bool mouseHeld)
     {
-        if(mouseHeld)
+        if(mouseHeld && isHoldingTile)
         {
-            currMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Get mouse pos
-            tilePos = currMousePos + (tilePivotPos - mouseDownPos); // Get && apply tile offset
-            activeTile.GetComponent<Transform>().position = new Vector3(tilePos.x, 1, tilePos.z); // Put tile on top
+            Vector3 currMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 targetPos = currMousePos + (initialTilePos - clickPosition); // Apply ofset so tiles are not held by corner
+            selectedTile.GetComponent<Transform>().position = new Vector3(targetPos.x, 1, targetPos.z); // Drag tile and put in front of others
         }
     }
 
     private void OnRelease(bool mouseReleased)
     {
-        if(mouseReleased)
+        if(mouseReleased && isHoldingTile)
         {
-            isTargetValid = false;
-
-            currMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float gridCol = Mathf.Floor(currMousePos.x / sprWidth);
-            float gridRow = Mathf.Abs(Mathf.Ceil(currMousePos.z / sprHeight));
-            // Find in what position in the grid array our mouse position correlate to
-            currGridPos = new Vector2(gridCol, gridRow);
-            if (tileMan.gridPoints[(int)currGridPos.x, (int)currGridPos.y].tile == null)
+            currMousePos = GetMousePos(Camera.main, gridUnitWidth, gridUnitHeight, out isWithinGrid);
+            ChangeTileAlpha(1.0f);
+            PlayAudioClip(mouseLeftUp);
+            if (isWithinGrid)
             {
-                tileMan.gridPoints[(int)currGridPos.x, (int)currGridPos.y].tile = activeTile;
-                tileMan.gridPoints[(int)gridPos.x, (int)gridPos.y].tile = null;
+                targetGridPoint = WorldPosToGridPoint(currMousePos, gridUnitWidth, gridUnitHeight);
+                if (gridManager.gridPoints[targetGridPoint].tile == null)
+                {
+                    // Swap tile objects
+                    gridManager.gridPoints[targetGridPoint].tile = selectedTile;
+                    gridManager.gridPoints[initialGridPoint].tile = null;
 
-                ChangeAlpha(0.5f);
-                PlaySound(mouseLeftDown);
-
-                Vector3 gridCoordinate = new Vector3(Mathf.Floor(currMousePos.x / sprWidth) * sprWidth, 0, Mathf.Ceil(currMousePos.z / sprHeight) * sprHeight);
-                activeTile.GetComponent<Transform>().position = gridCoordinate;
+                    GridPointToWorldPos(targetGridPoint);
+                }
+                else GridPointToWorldPos(initialGridPoint);
             }
-            else
-            {
-                Vector3 gridCoordinate = new Vector3(Mathf.Floor(mouseDownPos.x / sprWidth) * sprWidth, 0, Mathf.Ceil(mouseDownPos.z / sprHeight) * sprHeight);
-                activeTile.GetComponent<Transform>().position = gridCoordinate;
-            }
-
-            ChangeAlpha(1.0f);
-            PlaySound(mouseLeftUp);
+            else GridPointToWorldPos(initialGridPoint);
+            // Reset
+            isHoldingTile = false;
+            selectedTile = null;
+            // Reset for safety. How should I handle this?
+            isWithinGrid = false;
+            initialTilePos = new Vector3(0.0f, 0.0f, 0.0f);
         }
     }
 
-    private void ChangeAlpha(float alpha)
+    /// <summary> Get mouse cursor world position and determin if position is valid(on the grid)</summary>
+    /// <param name="worldPos"> The world position to search from</param>
+    /// <param name="gridWidth"> The width in meter of one grid space</param>
+    /// <param name="gridHeight"> The height in meter of one grid space</param>
+    /// <returns> Vector3</returns>
+    private Vector3 GetMousePos(Camera cam, float gridWidth, float gridHeight, out bool isMousePosValid)
     {
-        SpriteRenderer rend = activeTile.GetComponent<SpriteRenderer>();
+        Vector3 position = cam.ScreenToWorldPoint(Input.mousePosition);
+        if(position.x < 0 || position.z > 0 || position.x > gridManager.col * gridWidth || position.z < -(gridManager.row * gridHeight))
+        {
+            Debug.Log("Mouse position is outside of the grid: " + position);
+            isMousePosValid = false;
+        }
+        else 
+        { 
+            isMousePosValid = true;
+        }
+        return position;
+    }
+
+    /// <summary> Find which grid array element correspond to target world pos</summary>
+    /// <param name="worldPos"> The world position to search from</param>
+    /// <param name="gridWidth"> The width in meter of one grid space</param>
+    /// <param name="gridHeight"> The height in meter of one grid space</param>
+    /// <returns> Integer</returns>
+    private int WorldPosToGridPoint(Vector3 worldPos, float gridWidth, float gridHeight)
+    {
+        float col = Mathf.Floor(worldPos.x / gridWidth);
+        float row = Mathf.Abs(Mathf.Ceil(worldPos.z / gridHeight));
+        int position = (int)(col + (row * gridManager.row));
+        Debug.Log(position);
+
+        return position;
+    }
+
+    /// <summary> Return the world position of a grid point</summary>
+    /// <param name="gridPoint"> GridPoint object</param>
+    private void GridPointToWorldPos(int gridPoint)
+    {
+        selectedTile.GetComponent<Transform>().position = gridManager.gridPoints[gridPoint].position;
+    }
+
+    private void ChangeTileAlpha(float alpha)
+    {
+        SpriteRenderer rend = selectedTile.GetComponent<SpriteRenderer>();
         Color c = rend.material.color;
         c.a = alpha;
         rend.material.color = c;
     }
 
-    private void PlaySound(AudioClip clip)
+    private void PlayAudioClip(AudioClip clip)
     {
         audioSource.clip = clip;
         audioSource.Play();
     }
 }
-
-// Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow, 3.0f);
-// hit.collider.GetComponent<SpriteRenderer>().material.SetColor("_Color", Color.red);
