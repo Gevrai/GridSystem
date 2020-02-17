@@ -152,16 +152,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f6afc8575ab1d4e844adc61f88c268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridManager: {fileID: 0}
   col: 10
   row: 10
   spriteWidth: 0
   spriteHeight: 0
   gridPoints: []
   drawGrid: 1
-  genTiles: 1
   spawnChance: 0.522
+  referenceTile: {fileID: 0}
   topDownCam: {fileID: 963194225}
-  tiles: []
+  tiles:
+  - {fileID: 11400000, guid: a5f45e80493f22648a6b7a9f56aec4ef, type: 2}
+  - {fileID: 11400000, guid: 33592fccaa5d24a47ae4d7ed070894f2, type: 2}
 --- !u!4 &311008681
 Transform:
   m_ObjectHideFlags: 0

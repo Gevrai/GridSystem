@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewtTile", menuName = "Create tile")]
 public class ScriptableTile : ScriptableObject
 {
-    public Sprite tile;
+    public Sprite tileSprite;
     public enum State { walkable, blocked }
     public State tileState;
 }

@@ -16,9 +16,28 @@ public class CustomInspectors : Editor
         {
             gridManager.FindNeighbours();
         }*/
+        if (GUILayout.Button("Generate Grid", GUILayout.ExpandWidth(false)))
+        {
+            gridManager.GenGrid();
+        }
+        if (GUILayout.Button("Generate Tiles", GUILayout.ExpandWidth(false)))
+        {
+            //gridManager.GenTiles();
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Clear Grid", GUILayout.ExpandWidth(false)))
         {
             gridManager.ClearGrid();
+        }
+        if (GUILayout.Button("Save Grid", GUILayout.ExpandWidth(false)))
+        {
+            gridManager.SaveGridDatatoJson();
+        }
+        if (GUILayout.Button("Load Grid", GUILayout.ExpandWidth(false)))
+        {
+            gridManager.LoadGridDataFromJson();
         }
         GUILayout.EndHorizontal();
 

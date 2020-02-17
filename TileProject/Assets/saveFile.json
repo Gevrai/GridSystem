@@ -1,63 +1,1604 @@
 {
-    "gridUID": "GridPoint:0:0",
-    "col": 0,
-    "row": 0,
-    "state": 0,
-    "position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "tile": {
-        "instanceID": -3876004
-    },
-    "neighbours": [
+    "Items": [
         {
-            "x": 0.0,
-            "y": -1.0
+            "gridUID": 0,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
         },
         {
-            "x": 0.0,
-            "y": 1.0
+            "gridUID": 1,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
         },
         {
-            "x": -1.0,
-            "y": 0.0
+            "gridUID": 2,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
         },
         {
-            "x": 1.0,
-            "y": 0.0
-        }
-    ]
-}{
-    "gridUID": "GridPoint:1:0",
-    "col": 1,
-    "row": 0,
-    "state": 0,
-    "position": {
-        "x": 0.5,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "tile": {
-        "instanceID": -3876016
-    },
-    "neighbours": [
-        {
-            "x": 1.0,
-            "y": -1.0
+            "gridUID": 3,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
         },
         {
-            "x": 1.0,
-            "y": 1.0
+            "gridUID": 4,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84110
+            }
         },
         {
-            "x": 0.0,
-            "y": 0.0
+            "gridUID": 5,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
         },
         {
-            "x": 2.0,
-            "y": 0.0
+            "gridUID": 6,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 7,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 8,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 9,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84122
+            }
+        },
+        {
+            "gridUID": 10,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84134
+            }
+        },
+        {
+            "gridUID": 11,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84146
+            }
+        },
+        {
+            "gridUID": 12,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 13,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84158
+            }
+        },
+        {
+            "gridUID": 14,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 15,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 16,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 17,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 18,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 19,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84170
+            }
+        },
+        {
+            "gridUID": 20,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84182
+            }
+        },
+        {
+            "gridUID": 21,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84194
+            }
+        },
+        {
+            "gridUID": 22,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84206
+            }
+        },
+        {
+            "gridUID": 23,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 24,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 25,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84218
+            }
+        },
+        {
+            "gridUID": 26,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84230
+            }
+        },
+        {
+            "gridUID": 27,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84242
+            }
+        },
+        {
+            "gridUID": 28,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 29,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84254
+            }
+        },
+        {
+            "gridUID": 30,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 31,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84266
+            }
+        },
+        {
+            "gridUID": 32,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 33,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84278
+            }
+        },
+        {
+            "gridUID": 34,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84290
+            }
+        },
+        {
+            "gridUID": 35,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 36,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 37,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 38,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 39,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -1.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84302
+            }
+        },
+        {
+            "gridUID": 40,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84314
+            }
+        },
+        {
+            "gridUID": 41,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84326
+            }
+        },
+        {
+            "gridUID": 42,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84338
+            }
+        },
+        {
+            "gridUID": 43,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 44,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 45,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84350
+            }
+        },
+        {
+            "gridUID": 46,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84362
+            }
+        },
+        {
+            "gridUID": 47,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 48,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84374
+            }
+        },
+        {
+            "gridUID": 49,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -2.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 50,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 51,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 52,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84386
+            }
+        },
+        {
+            "gridUID": 53,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 54,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84398
+            }
+        },
+        {
+            "gridUID": 55,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84410
+            }
+        },
+        {
+            "gridUID": 56,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84422
+            }
+        },
+        {
+            "gridUID": 57,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84434
+            }
+        },
+        {
+            "gridUID": 58,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 59,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -2.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84446
+            }
+        },
+        {
+            "gridUID": 60,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 61,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84458
+            }
+        },
+        {
+            "gridUID": 62,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84470
+            }
+        },
+        {
+            "gridUID": 63,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 64,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84482
+            }
+        },
+        {
+            "gridUID": 65,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84494
+            }
+        },
+        {
+            "gridUID": 66,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84506
+            }
+        },
+        {
+            "gridUID": 67,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84518
+            }
+        },
+        {
+            "gridUID": 68,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84530
+            }
+        },
+        {
+            "gridUID": 69,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -3.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84542
+            }
+        },
+        {
+            "gridUID": 70,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 71,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84554
+            }
+        },
+        {
+            "gridUID": 72,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 73,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84566
+            }
+        },
+        {
+            "gridUID": 74,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84578
+            }
+        },
+        {
+            "gridUID": 75,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84590
+            }
+        },
+        {
+            "gridUID": 76,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 77,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84602
+            }
+        },
+        {
+            "gridUID": 78,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 79,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -3.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 80,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84614
+            }
+        },
+        {
+            "gridUID": 81,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84626
+            }
+        },
+        {
+            "gridUID": 82,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 83,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 84,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84638
+            }
+        },
+        {
+            "gridUID": 85,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 86,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 87,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84650
+            }
+        },
+        {
+            "gridUID": 88,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84662
+            }
+        },
+        {
+            "gridUID": 89,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -4.0
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84674
+            }
+        },
+        {
+            "gridUID": 90,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 91,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84686
+            }
+        },
+        {
+            "gridUID": 92,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 93,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 94,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.0,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": false,
+            "tile": {
+                "instanceID": 0
+            }
+        },
+        {
+            "gridUID": 95,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84698
+            }
+        },
+        {
+            "gridUID": 96,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.0,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84710
+            }
+        },
+        {
+            "gridUID": 97,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 3.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84722
+            }
+        },
+        {
+            "gridUID": 98,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 1,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84734
+            }
+        },
+        {
+            "gridUID": 99,
+            "gridManager": {
+                "instanceID": 12340
+            },
+            "state": 0,
+            "position": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "hasTile": true,
+            "tile": {
+                "instanceID": -84746
+            }
         }
     ]
 }

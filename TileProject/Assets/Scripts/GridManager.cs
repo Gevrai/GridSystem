@@ -4,84 +4,46 @@ using UnityEngine;
 using System.IO;
 
 /*todo :
+ * Make it impossible to generate grids multiple time.
  * Integrate scriptable object to tile generation
  * Preload all tile resources for tile generation and clean all resources afterward
  * Add character controller and wasd movements on grid
  * Add fire emblem mouvements with ranges.
- * Terrain editor exporting to json for save files.
+ * (Almost)Terrain editor exporting to json for save files.
  * Add ennemies
  * Add pathfinding AI
  * */
 
 public class GridManager : MonoBehaviour
 {
+    public GridManager gridManager;
     public int col;
     public int row;
-    [HideInInspector] public float spriteWidth;
-    [HideInInspector] public float spriteHeight;
+    [HideInInspector] 
+    public float spriteWidth;
+    [HideInInspector] 
+    public float spriteHeight;
 
     public GridPoints[] gridPoints;
     public bool drawGrid;
-    public bool genTiles;
-    [Range(0.0f, 1.0f)] public float spawnChance = 1.0f;
-    private GameObject referenceTile; // TODO : Must be made into an array
+    [Range(0.0f, 1.0f)] 
+    public float spawnChance = 1.0f;
+    public List<ScriptableTile> tileTypes;
+    [HideInInspector] 
+    public GameObject[] referenceTile;
 
     public GameObject topDownCam;
 
-    public List<ScriptableTile> tiles;
-
-    [System.Serializable]
-    public class GridPoints
+    private void Awake()
     {
-        public string gridUID; // Used to find the good array entry when loading back from json
-        public int col, row; // Not sure if necessary
-        public enum PointState { walkable, blocked }
-        public PointState state;
-        public Vector3 position;
-        public GameObject tile;
-        public Vector2[] neighbours;
-
-        public GridPoints(int GridUID, int col, int row, Vector3 position)
-        {
-            gridUID = SetGridPointUID(col, row);
-            this.col = col;
-            this.row = row;
-            FindNeighbours();
-            this.position = position;
-            
-        }
-
-        private string SetGridPointUID(int row, int col)
-        {
-            string UID = "GridPoint:" + row + ":" + col;
-            return UID;
-        }
-
-        private void FindNeighbours()
-        {
-            neighbours = new Vector2[4];
-            neighbours[0] = new Vector2(col, row - 1);  // Up
-            neighbours[1] = new Vector2(col, row + 1); // Down
-            neighbours[2] = new Vector2(col - 1, row); // Left
-            neighbours[3] = new Vector2(col + 1, row); // Right
-        }
+        gridManager = this;
+        referenceTile = new GameObject[tileTypes.Count];
     }
 
     private void Start()
     {
-        LoadReference();
-        GenGrid();
-        if(genTiles) GenTiles();
-        //SaveGridDatatoJson();
-        SetCam();
-
-        Destroy(referenceTile);
-    }
-
-    public void LoadReference()
-    {
-        referenceTile = (GameObject)Instantiate(Resources.Load("Tile32White"));
         GetTileSize();
+        SetCam();
     }
 
     public void GenGrid()
@@ -89,35 +51,53 @@ public class GridManager : MonoBehaviour
         gridPoints = new GridPoints[col * row];
         for (int i = 0; i < gridPoints.Length; i++) 
         {
-            int xPos = i % col;
-            int zPos = (int)Mathf.Floor(i / col);
-            Vector3 position = new Vector3(xPos * spriteWidth, 0.0f, zPos * -spriteHeight);
-
-            gridPoints[i] = new GridPoints(i, xPos, zPos, position);
+            gridPoints[i] = new GridPoints(i, col, row, spriteWidth, spriteHeight, gridManager);
+            gridPoints[i].hasTile = (Random.Range(0.0f, 1.0f) < spawnChance)? true: false;
         }
         if (drawGrid) DrawGrid();
     }
-
+    
     public void GenTiles()
     {
-        for (int i = 0; i < (col * row); i++) 
+        GenerateAllRefTiles();
+        for (int i = 0; i < (gridPoints.Length); i++) 
         {
-            float a = Random.Range(0.0f, 1.0f);
-            if(a < spawnChance)
+            if(gridPoints[i].hasTile)
             {
-                Vector3 worldPos = gridPoints[i].position;
-                gridPoints[i].tile = (GameObject)Instantiate(referenceTile, worldPos, referenceTile.transform.rotation, transform);
+                gridPoints[i].tile = (GameObject)Instantiate(referenceTile, gridPoints[i].position, referenceTile.transform.rotation, transform);
                 gridPoints[i].tile.layer = 8;
-                SetTileColor(i); // temporary, for testing
             }
+        }
+        DestroyAllRefTiles();
+    }
+
+    public void GenerateAllRefTiles()
+    {
+        for (int i = 0; i < tileTypes.Count; i++)
+        {
+            referenceTile[i] = (GameObject)Instantiate(Resources.Load("BlankTile32"));
+            referenceTile[i].GetComponent<SpriteRenderer>().sprite = tileTypes[i].tileSprite;
+        }
+    }
+
+    public void DestroyAllRefTiles()
+    {
+        for (int i = 0; i < tileTypes.Count; i++)
+        {
+            Destroy(referenceTile[i]);
         }
     }
 
     private void GetTileSize()
     {
-        SpriteRenderer sprRend = referenceTile.GetComponent<SpriteRenderer>();
+        referenceTile[0] = (GameObject)Instantiate(Resources.Load("Tile32White"));
+        referenceTile[0].GetComponent<SpriteRenderer>().sprite = tileTypes[0].tileSprite;
+
+        SpriteRenderer sprRend = referenceTile[0].GetComponent<SpriteRenderer>();
         spriteWidth = sprRend.sprite.rect.width / sprRend.sprite.pixelsPerUnit;
         spriteHeight = sprRend.sprite.rect.height / sprRend.sprite.pixelsPerUnit;
+
+        Destroy(referenceTile[0]);
     }
 
     private void SetCam()
@@ -139,24 +119,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void SetTileColor(int i) // Temporary, for testing.
-    {
-        int rnd = Random.Range(0, 2);
-        if (rnd == 0)
-        {
-            gridPoints[i].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.green);
-            gridPoints[i].state = GridPoints.PointState.walkable;
-        }
-        else
-        {
-            gridPoints[i].tile.GetComponentInChildren<SpriteRenderer>().material.SetColor("_Color", Color.gray);
-            gridPoints[i].state = GridPoints.PointState.blocked;
-        }
-    }
-
     public void ClearGrid()
     {
-        for (int i = 0; i < col; i++) 
+        for (int i = 0; i < col * row; i++) 
         {
             gridPoints[i].state = GridPoints.PointState.walkable;
             Destroy(gridPoints[i].tile);
@@ -177,90 +142,20 @@ public class GridManager : MonoBehaviour
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
     }
-    /*
-    private void SaveGridDatatoJson()
+    
+    public void SaveGridDatatoJson()
     {
-        string toJson;
-        string fromJson = "";
         if (File.Exists(Application.dataPath + "/saveFile.json")) File.Delete(Application.dataPath + "/saveFile.json");
-        toJson = JsonHelper.ToJson(gridPoints, true);
-
-        
-        for (int i = 0; i < col; i++)
-        {
-            for (int j = 0; j < row; j++)
-            {
-                if(File.Exists(Application.dataPath + "/saveFile.json")) 
-                {
-                    fromJson = File.ReadAllText(Application.dataPath + "/saveFile.json");
-                }
-                toJson = JsonUtility.ToJson(gridPoints[i, j], true);
-                toJson = fromJson + toJson;
-                File.WriteAllText(Application.dataPath + "/saveFile.json", toJson);
-            }
-        }
-    }*/
-
-    /*private void LoadGridDataFromJson()
-    {
-        for (int i = 0; i < col; i++)
-        {
-            for (int j = 0; j < row; j++)
-            {
-            }
-        }
-        string json = File.ReadAllText(Application.dataPath + "/saveFile.json");
-        GridPoints loadedGridPointsData = JsonUtility.FromJson<GridPoints>(json);
+        string toJson = JsonHelper.ToJson(gridPoints, true);
+        File.WriteAllText(Application.dataPath + "/saveFile.json", toJson);
     }
 
-
-    private static string text = "This is an example string and my data is here";
-    string data = getBetween(text, "string", "is");
-
-    public static string getBetween(string strSource, string strStart, string strEnd)
+    public void LoadGridDataFromJson()
     {
-        int Start, End;
-        if (strSource.Contains(strStart) && strSource.Contains(strEnd))
-        {
-            Start = strSource.IndexOf(strStart, 0) + strStart.Length;
-            End = strSource.IndexOf(strEnd, Start);
-            Debug.Log(strSource.Substring(Start, End - Start));
-            return strSource.Substring(Start, End - Start);
-        }
-        else
-        {
-            return "";
-        }
-    }*/
+        string fromJson = File.ReadAllText(Application.dataPath + "/saveFile.json");
+        GridPoints[] gridPoints = JsonHelper.FromJson<GridPoints>(fromJson);
 
-
-    public static class JsonHelper
-    {
-        public static T[] FromJson<T>(string json)
-        {
-            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-            return wrapper.Items;
-        }
-
-        public static string ToJson<T>(T[] array)
-        {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper);
-        }
-
-        public static string ToJson<T>(T[] array, bool prettyPrint)
-        {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper, prettyPrint);
-        }
-
-        [System.Serializable]
-        private class Wrapper<T>
-        {
-            public T[] Items;
-        }
+        //GenTiles();
     }
 }
 
