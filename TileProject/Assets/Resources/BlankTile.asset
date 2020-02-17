@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf32d89f74ad054d948cfd688175f98, type: 3}
   m_Name: BlankTile
   m_EditorClassIdentifier: 
-  tile: {fileID: 0}
+  tileSprite: {fileID: 0}
   tileState: 0
