@@ -22,7 +22,7 @@ public class CustomInspectors : Editor
         }
         if (GUILayout.Button("Generate Tiles", GUILayout.ExpandWidth(false)))
         {
-            //gridManager.GenTiles();
+            gridManager.GenTiles();
         }
         GUILayout.EndHorizontal();
 

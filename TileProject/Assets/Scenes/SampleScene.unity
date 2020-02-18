@@ -159,8 +159,11 @@ MonoBehaviour:
   spriteHeight: 0
   gridPoints: []
   drawGrid: 1
-  spawnChance: 0.522
-  tileTypes: []
+  spawnChance: 0.5
+  tileTypes:
+  - {fileID: 11400000, guid: 560eeb4d4edcb134195e957583e31484, type: 2}
+  - {fileID: 11400000, guid: a5f45e80493f22648a6b7a9f56aec4ef, type: 2}
+  - {fileID: 11400000, guid: 33592fccaa5d24a47ae4d7ed070894f2, type: 2}
   referenceTile: []
   topDownCam: {fileID: 963194225}
 --- !u!4 &311008681

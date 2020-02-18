@@ -51,20 +51,35 @@ public class GridManager : MonoBehaviour
         gridPoints = new GridPoints[col * row];
         for (int i = 0; i < gridPoints.Length; i++) 
         {
-            gridPoints[i] = new GridPoints(i, col, row, spriteWidth, spriteHeight, gridManager);
-            gridPoints[i].hasTile = (Random.Range(0.0f, 1.0f) < spawnChance)? true: false;
+            gridPoints[i] = new GridPoints(i, col, row, spriteWidth, spriteHeight, gridManager, 0);
         }
         if (drawGrid) DrawGrid();
     }
-    
+
     public void GenTiles()
     {
         GenerateAllRefTiles();
-        for (int i = 0; i < (gridPoints.Length); i++) 
+        for (int i = 0; i < (gridPoints.Length); i++)
         {
-            if(gridPoints[i].hasTile)
+            gridPoints[i].hasTile = (Random.Range(0.0f, 1.0f) < spawnChance) ? true : false;
+            if (gridPoints[i].hasTile)
             {
-                gridPoints[i].tile = (GameObject)Instantiate(referenceTile, gridPoints[i].position, referenceTile.transform.rotation, transform);
+                gridPoints[i].identity = Random.Range(0, 3);
+                gridPoints[i].tile = (GameObject)Instantiate(referenceTile[gridPoints[i].identity], gridPoints[i].position, referenceTile[gridPoints[i].identity].transform.rotation, transform);
+                gridPoints[i].tile.layer = 8;
+            }
+        }
+        DestroyAllRefTiles();
+    }
+
+    public void LoadTiles()
+    {
+        GenerateAllRefTiles();
+        for (int i = 0; i < (gridPoints.Length); i++)
+        {
+            if (gridPoints[i].hasTile)
+            {
+                gridPoints[i].tile = (GameObject)Instantiate(referenceTile[gridPoints[i].identity], gridPoints[i].position, referenceTile[gridPoints[i].identity].transform.rotation, transform);
                 gridPoints[i].tile.layer = 8;
             }
         }
@@ -90,7 +105,7 @@ public class GridManager : MonoBehaviour
 
     private void GetTileSize()
     {
-        referenceTile[0] = (GameObject)Instantiate(Resources.Load("Tile32White"));
+        referenceTile[0] = (GameObject)Instantiate(Resources.Load("BlankTile32"));
         referenceTile[0].GetComponent<SpriteRenderer>().sprite = tileTypes[0].tileSprite;
 
         SpriteRenderer sprRend = referenceTile[0].GetComponent<SpriteRenderer>();
@@ -155,7 +170,7 @@ public class GridManager : MonoBehaviour
         string fromJson = File.ReadAllText(Application.dataPath + "/saveFile.json");
         GridPoints[] gridPoints = JsonHelper.FromJson<GridPoints>(fromJson);
 
-        //GenTiles();
+        LoadTiles();
     }
 }
 

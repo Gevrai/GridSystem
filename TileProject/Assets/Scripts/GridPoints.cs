@@ -5,19 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class GridPoints
 {
-    public int gridUID;
     public GridManager gridManager;
+    public int gridUID;
+    public Vector3 position;
     public enum PointState { walkable, blocked }
     public PointState state;
-    public Vector3 position;
-    public bool hasTile;
+    public int identity;
+    
     public GameObject tile;
+    public bool hasTile;
 
-    public GridPoints(int gridUID, int col, int row, float sprWidth, float sprHeight, GridManager gridManager)
+    public GridPoints(int gridUID, int col, int row, float sprWidth, float sprHeight, GridManager gridManager, int identity)
     {
-        this.gridUID = gridUID;
-        this.position = FindWorldPosition(col, row, sprWidth, sprHeight);
         this.gridManager = gridManager;
+        this.gridUID = gridUID;
+        position = FindWorldPosition(col, row, sprWidth, sprHeight);
+        this.identity = identity;
+        
     }
 
     private Vector3 FindWorldPosition(int col, int row, float sprWidth, float sprHeight)
