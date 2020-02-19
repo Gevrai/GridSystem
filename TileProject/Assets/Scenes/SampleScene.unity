@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 0}
-  col: 10
-  row: 10
+  isGridGenerated: 0
+  col: 5
+  row: 5
   spriteWidth: 0
   spriteHeight: 0
   gridPoints: []

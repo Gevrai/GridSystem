@@ -18,11 +18,11 @@ public class CustomInspectors : Editor
         }*/
         if (GUILayout.Button("Generate Grid", GUILayout.ExpandWidth(false)))
         {
-            gridManager.GenGrid();
+            gridManager.GenerateGrid();
         }
         if (GUILayout.Button("Generate Tiles", GUILayout.ExpandWidth(false)))
         {
-            gridManager.GenTiles();
+            gridManager.GenerateTiles();
         }
         GUILayout.EndHorizontal();
 
@@ -41,5 +41,27 @@ public class CustomInspectors : Editor
         }
         GUILayout.EndHorizontal();
 
+    }
+}
+
+[CustomEditor(typeof(ScriptableTile))]
+public class CustomScriptableTileInspector : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        ScriptableTile scriptableTile = (ScriptableTile)target;
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("<<", GUILayout.ExpandWidth(false)))
+        {
+            scriptableTile.DecrMovCost();
+        }
+        EditorGUILayout.LabelField("Movement Cost: " + scriptableTile.moveCost, GUILayout.ExpandWidth(false));
+        if (GUILayout.Button(">>", GUILayout.ExpandWidth(false)))
+        {
+            scriptableTile.IncrMovCost();
+        }
+        GUILayout.EndHorizontal();
     }
 }

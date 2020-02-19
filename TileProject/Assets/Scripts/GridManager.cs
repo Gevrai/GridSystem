@@ -4,12 +4,14 @@ using UnityEngine;
 using System.IO;
 
 /*todo :
- * Make it impossible to generate grids multiple time.
- * Integrate scriptable object to tile generation
- * Preload all tile resources for tile generation and clean all resources afterward
+ * Change grid visual element to a button working as a toggle with chaning text (on/off).
+ * Support tiles that cover multiple grid spaces && use new find neighbour function.
+ * Integrate mouse control based grid edition.
+ * Integrate multiple save profile
+ * Support tetranimos, compatible with drag and drop.
+ * 
  * Add character controller and wasd movements on grid
  * Add fire emblem mouvements with ranges.
- * (Almost)Terrain editor exporting to json for save files.
  * Add ennemies
  * Add pathfinding AI
  * */
@@ -17,20 +19,16 @@ using System.IO;
 public class GridManager : MonoBehaviour
 {
     public GridManager gridManager;
-    public int col;
-    public int row;
-    [HideInInspector] 
-    public float spriteWidth;
-    [HideInInspector] 
-    public float spriteHeight;
+    [HideInInspector] public bool isGridGenerated;
+    public int col, row;
+    [HideInInspector] public float spriteWidth, spriteHeight;
 
     public GridPoints[] gridPoints;
     public bool drawGrid;
     [Range(0.0f, 1.0f)] 
     public float spawnChance = 1.0f;
     public List<ScriptableTile> tileTypes;
-    [HideInInspector] 
-    public GameObject[] referenceTile;
+    [HideInInspector] public GameObject[] referenceTile;
 
     public GameObject topDownCam;
 
@@ -46,17 +44,22 @@ public class GridManager : MonoBehaviour
         SetCam();
     }
 
-    public void GenGrid()
+    public void GenerateGrid()
     {
-        gridPoints = new GridPoints[col * row];
-        for (int i = 0; i < gridPoints.Length; i++) 
+        if(!isGridGenerated)
         {
-            gridPoints[i] = new GridPoints(i, col, row, spriteWidth, spriteHeight, gridManager, 0);
+            isGridGenerated = true;
+            gridPoints = new GridPoints[col * row];
+            for (int i = 0; i < gridPoints.Length; i++)
+            {
+                gridPoints[i] = new GridPoints(gridManager, i, 0, col, row, spriteWidth, spriteHeight);
+            }
+            if (drawGrid) DrawGrid();
         }
-        if (drawGrid) DrawGrid();
+        else Debug.Log("Grid already exist, aborting grid generation");
     }
 
-    public void GenTiles()
+    public void GenerateTiles()
     {
         GenerateAllRefTiles();
         for (int i = 0; i < (gridPoints.Length); i++)
@@ -64,7 +67,7 @@ public class GridManager : MonoBehaviour
             gridPoints[i].hasTile = (Random.Range(0.0f, 1.0f) < spawnChance) ? true : false;
             if (gridPoints[i].hasTile)
             {
-                gridPoints[i].identity = Random.Range(0, 3);
+                gridPoints[i].identity = Random.Range(0, 3); // TEMPORARY, AUTOMATICALLY GEN VARIED TILE
                 gridPoints[i].tile = (GameObject)Instantiate(referenceTile[gridPoints[i].identity], gridPoints[i].position, referenceTile[gridPoints[i].identity].transform.rotation, transform);
                 gridPoints[i].tile.layer = 8;
             }
@@ -138,9 +141,42 @@ public class GridManager : MonoBehaviour
     {
         for (int i = 0; i < col * row; i++) 
         {
-            gridPoints[i].state = GridPoints.PointState.walkable;
+            gridPoints[i].tileState = GridPoints.TileState.walkable;
+            gridPoints[i].moveCost = 0;
             Destroy(gridPoints[i].tile);
         }
+    }
+
+    public int FindGridPointNeighbour(int UID, string direction)
+    {
+        int targetUID = 0;
+        switch (direction)
+        {
+            case "up":
+                if (gridPoints[UID].gridUID - col >= 0)
+                    targetUID = gridPoints[UID - col].gridUID;
+                break;
+
+            case "down":
+                if (gridPoints[UID].gridUID + col <= gridPoints.Length)
+                    targetUID = gridPoints[UID + col].gridUID;
+                break;
+
+            case "left":
+                if (gridPoints[UID].gridUID - 1 >= 0 && UID % col != 0)
+                    targetUID = gridPoints[UID - 1].gridUID;
+                break;
+
+            case "right":
+                if (gridPoints[UID].gridUID + 1 <= gridPoints.Length && UID % col != col - 1)
+                    targetUID = gridPoints[UID + 1].gridUID;
+                break;
+
+            default:
+                targetUID = -1;
+                break;
+        }
+        return targetUID;
     }
 
     private void DrawGridLine(Vector3 start, Vector3 end, Color color, float width)
@@ -170,6 +206,7 @@ public class GridManager : MonoBehaviour
         string fromJson = File.ReadAllText(Application.dataPath + "/saveFile.json");
         GridPoints[] gridPoints = JsonHelper.FromJson<GridPoints>(fromJson);
 
+        ClearGrid();
         LoadTiles();
     }
 }

@@ -13,18 +13,13 @@ public class MouseControls : MonoBehaviour
     private GridManager gridManager;
     private bool isWithinGrid;
     private bool isHoldingTile;
-    private Vector3 clickPosition;
-    private Vector3 initialTilePos;
-    private Vector3 currMousePos;
+    private Vector3 clickPosition, initialTilePos, currMousePos;
     private GameObject selectedTile;
-    private int initialGridPoint;
-    private int targetGridPoint;
+    private int initialGridPoint, targetGridPoint;
     private AudioSource audioSource;
-    public AudioClip mouseLeftDown;
-    public AudioClip mouseLeftUp;
+    public AudioClip mouseLeftDown, mouseLeftUp;
 
-    [HideInInspector] public float gridUnitWidth;
-    [HideInInspector] public float gridUnitHeight;
+    [HideInInspector] public float gridUnitWidth, gridUnitHeight;
 
     private SpriteRenderer spriteAlpha;
 
@@ -133,7 +128,7 @@ public class MouseControls : MonoBehaviour
     private int WorldPosToGridPoint(Vector3 worldPos, float gridWidth, float gridHeight)
     {
         float col = Mathf.Floor(worldPos.x / gridWidth);
-        float row = Mathf.Abs(Mathf.Ceil(worldPos.z / gridHeight));
+        float row = Mathf.Floor(Mathf.Abs(worldPos.z / gridHeight));
         int position = (int)(col + (row * gridManager.row));
         Debug.Log(position);
 
