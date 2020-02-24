@@ -152,21 +152,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f6afc8575ab1d4e844adc61f88c268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridManager: {fileID: 0}
-  isGridGenerated: 0
-  col: 5
-  row: 5
-  spriteWidth: 0
-  spriteHeight: 0
-  gridPoints: []
-  drawGrid: 1
-  spawnChance: 0.5
-  tileTypes:
+  baseTile: {fileID: 7448584491549303706, guid: 7e7e9a3a445b5a546b435df1483e7e12,
+    type: 3}
+  col: 10
+  row: 10
+  tileSpawnChance: 0.5
+  scriptableTiles:
   - {fileID: 11400000, guid: 560eeb4d4edcb134195e957583e31484, type: 2}
   - {fileID: 11400000, guid: a5f45e80493f22648a6b7a9f56aec4ef, type: 2}
   - {fileID: 11400000, guid: 33592fccaa5d24a47ae4d7ed070894f2, type: 2}
-  referenceTile: []
-  topDownCam: {fileID: 963194225}
+  gridPoints: []
+  texture: {fileID: 2800000, guid: 14ddaa19ddeaeec4f9a491aba6ea7ab6, type: 3}
 --- !u!4 &311008681
 Transform:
   m_ObjectHideFlags: 0
@@ -195,8 +191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseLeftDown: {fileID: 8300000, guid: 50b8a9e559505594ca5a85f0711e90a9, type: 3}
   mouseLeftUp: {fileID: 8300000, guid: f3cf4019d0479344c9fe2dc84904041a, type: 3}
-  gridUnitWidth: 0
-  gridUnitHeight: 0
 --- !u!82 &311008683
 AudioSource:
   m_ObjectHideFlags: 0

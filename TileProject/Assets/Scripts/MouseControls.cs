@@ -11,51 +11,60 @@ using UnityEngine;
 public class MouseControls : MonoBehaviour
 {
     private GridManager gridManager;
-    private bool isWithinGrid;
-    private bool isHoldingTile;
+    private bool isWithinGrid, isHoldingTile;
     private Vector3 clickPosition, initialTilePos, currMousePos;
     private GameObject selectedTile;
-    private int initialGridPoint, targetGridPoint;
+    private int originUID, targetUID;
+    private float gridPointWidth, gridPointHeight;
+
     private AudioSource audioSource;
     public AudioClip mouseLeftDown, mouseLeftUp;
-
-    [HideInInspector] public float gridUnitWidth, gridUnitHeight;
-
     private SpriteRenderer spriteAlpha;
 
-    void Start()
+    private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         gridManager = GetComponent<GridManager>();
-
-        gridUnitWidth = gridManager.spriteWidth;
-        gridUnitHeight = gridManager.spriteHeight;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        OnClick(Input.GetMouseButtonDown(0));
+        OnDragAndDrop(Input.GetMouseButtonDown(0));
+        OnPaint(Input.GetKeyDown(KeyCode.Space));
         OnMouseHold(Input.GetMouseButton(0));
         OnRelease(Input.GetMouseButtonUp(0));
     }
 
-    private void OnClick(bool mouseDown)
+    private void OnDragAndDrop(bool mouseDown)
     {
         if(mouseDown)
         {
-            clickPosition = GetMousePos(Camera.main, gridUnitWidth, gridUnitHeight, out isWithinGrid);
+            clickPosition = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
             if(isWithinGrid)
             {
-                initialGridPoint = WorldPosToGridPoint(clickPosition, gridUnitWidth, gridUnitHeight);
-                if (gridManager.gridPoints[initialGridPoint].tile != null)
+                originUID = WorldPosToGridPoint(clickPosition, gridPointWidth, gridPointHeight);
+                if (gridManager.gridPoints[originUID].tile != null)
                 {
                     isHoldingTile = true;
-                    selectedTile = gridManager.gridPoints[initialGridPoint].tile;
+                    selectedTile = gridManager.gridPoints[originUID].tile;
                     initialTilePos = selectedTile.GetComponent<Transform>().position;
 
                     ChangeTileAlpha(0.5f);
                     PlayAudioClip(mouseLeftDown);
                 }
+            }
+        }
+    }
+
+    private void OnPaint(bool spaceDown)
+    {
+        if(spaceDown)
+        {
+            clickPosition = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
+            if(isWithinGrid)
+            {
+                int targetUID = WorldPosToGridPoint(clickPosition, gridPointWidth, gridPointHeight);
+                gridManager.GenerateNewTile(1, targetUID);
             }
         }
     }
@@ -74,29 +83,41 @@ public class MouseControls : MonoBehaviour
     {
         if(mouseReleased && isHoldingTile)
         {
-            currMousePos = GetMousePos(Camera.main, gridUnitWidth, gridUnitHeight, out isWithinGrid);
+            currMousePos = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
+
             ChangeTileAlpha(1.0f);
             PlayAudioClip(mouseLeftUp);
+
             if (isWithinGrid)
             {
-                targetGridPoint = WorldPosToGridPoint(currMousePos, gridUnitWidth, gridUnitHeight);
-                if (gridManager.gridPoints[targetGridPoint].tile == null)
+                targetUID = WorldPosToGridPoint(currMousePos, gridPointWidth, gridPointHeight);
+                if (gridManager.gridPoints[targetUID].tile == null)
                 {
-                    // Swap tile objects
-                    gridManager.gridPoints[targetGridPoint].tile = selectedTile;
-                    gridManager.gridPoints[initialGridPoint].tile = null;
+                    // Move tile object
+                    gridManager.gridPoints[targetUID].tile = selectedTile;
+                    gridManager.gridPoints[originUID].tile = null;
 
-                    GridPointToWorldPos(targetGridPoint);
+                    TiletoGridPos(selectedTile, targetUID);
                 }
-                else GridPointToWorldPos(initialGridPoint);
+                else 
+                {
+                    // Store target UID tile
+                    GameObject temp = gridManager.gridPoints[targetUID].tile;
+                    // Set target UID tile equal current UID tile
+                    gridManager.gridPoints[targetUID].tile = gridManager.gridPoints[originUID].tile;
+                    TiletoGridPos(gridManager.gridPoints[targetUID].tile, targetUID);
+                    // Set current UID tile equal as stored UID tile
+                    gridManager.gridPoints[originUID].tile = temp;
+                    TiletoGridPos(gridManager.gridPoints[originUID].tile, originUID);
+                    // Destroy stored UID tile GO
+                    // Call setup on each grid point
+                }
             }
-            else GridPointToWorldPos(initialGridPoint);
-            // Reset
+            else TiletoGridPos(selectedTile, originUID);
+
             isHoldingTile = false;
             selectedTile = null;
-            // Reset for safety. How should I handle this?
             isWithinGrid = false;
-            initialTilePos = new Vector3(0.0f, 0.0f, 0.0f);
         }
     }
 
@@ -130,18 +151,23 @@ public class MouseControls : MonoBehaviour
         float col = Mathf.Floor(worldPos.x / gridWidth);
         float row = Mathf.Floor(Mathf.Abs(worldPos.z / gridHeight));
         int position = (int)(col + (row * gridManager.row));
-        Debug.Log(position);
 
         return position;
     }
 
-    /// <summary> Return the world position of a grid point</summary>
-    /// <param name="gridPoint"> GridPoint object</param>
-    private void GridPointToWorldPos(int gridPoint)
+    /// <summary> Move a tile GO to a grid point position</summary>
+    private void TiletoGridPos(GameObject tile, int UID)
     {
-        selectedTile.GetComponent<Transform>().position = gridManager.gridPoints[gridPoint].position;
+        tile.GetComponent<Transform>().position = gridManager.gridPoints[UID].position;
     }
 
+    public void RefreshGridMetrics()
+    {
+        gridPointWidth = gridManager.SpriteWidth;
+        gridPointHeight = gridManager.SpriteHeight;
+    }
+
+    /// <summary> Make tile semi-transparent when selected</summary>
     private void ChangeTileAlpha(float alpha)
     {
         SpriteRenderer rend = selectedTile.GetComponent<SpriteRenderer>();
