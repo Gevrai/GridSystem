@@ -10,17 +10,16 @@ using TMPro;
  * Support tiles that cover multiple grid spaces && use new find neighbour function.
  * Integrate multiple save profile
  * Support tetranimos, compatible with drag and drop.
- * 
+ * Support multiple select
  * Add character controller and wasd movements on grid
- * Add fire emblem mouvements with ranges.
- * Add ennemies
- * Add pathfinding AI
+ *
+ *
+ *
  * 
  * */
 
 public class GridManager : MonoBehaviour
 {
-    private GridManager gridManager;
     private List<GameObject> gridLines = new List<GameObject>();
     private List<GameObject> gridTMPro = new List<GameObject>();
     private GameObject[] referenceTiles;
@@ -42,20 +41,16 @@ public class GridManager : MonoBehaviour
     [HideInInspector]
     public Texture texture;
 
-    private void Awake()
+    private void Start()
     {
-        gridManager = this;
         referenceTiles = new GameObject[scriptableTiles.Count];
-        cam = Camera.main;
 
         shareGridMetrics = new UnityEvent();
         shareGridMetrics.AddListener(GetComponent<MouseControls>().RefreshGridMetrics);
-    }
-
-    private void Start()
-    {
         InferGridPointSize(baseTile.name, 0);
-        SetCamPosition();
+
+        cam = Camera.main;
+        SetupCamera();
     }
 
     public void GenerateGrid()
@@ -66,7 +61,7 @@ public class GridManager : MonoBehaviour
             gridPoints = new GridPoints[col * row];
             for (int i = 0; i < gridPoints.Length; i++)
             {
-                gridPoints[i] = new GridPoints(gridManager, i, col, row, spriteWidth, spriteHeight);
+                gridPoints[i] = new GridPoints(this, i, col, row, spriteWidth, spriteHeight);
             }
             GenerateGridLines();
             GenerateGridTMPro();
@@ -76,6 +71,7 @@ public class GridManager : MonoBehaviour
 
     public void GenerateTiles()
     {
+        DestroyTiles();
         GenerateRefTiles();
         for (int i = 0; i < gridPoints.Length; i++)
         {
@@ -93,6 +89,7 @@ public class GridManager : MonoBehaviour
 
     public void LoadTiles()
     {
+        DestroyTiles();
         GenerateRefTiles();
         for (int i = 0; i < gridPoints.Length; i++)
         {
@@ -108,7 +105,7 @@ public class GridManager : MonoBehaviour
 
     /// <summary> Generate a specific tile object and assign it to a gridpoint</summary>
     /// <param name="identity"> Which tile type to use for generation</param>
-    /// /// <param name="UID"> The unique identifier of the gridpoint that recieve the generated tile</param>
+    /// <param name="UID"> The unique identifier of the gridpoint that recieve the generated tile</param>
     public void GenerateNewTile(int identity, int UID)
     {
         Destroy(gridPoints[UID].tile);
@@ -165,8 +162,8 @@ public class GridManager : MonoBehaviour
         Destroy(referenceTiles[0]);
     }
 
-    /// <summary> Set camera position to frame created grid size</summary>
-    private void SetCamPosition()
+    /// <summary> Set camera position and other params to frame created grid size</summary>
+    private void SetupCamera()
     {
         cam.orthographicSize = col / 4.0f;
         cam.GetComponent<Transform>().position = new Vector3((col / 2.0f * spriteWidth), 5.0f, (row / 2.0f * -spriteHeight));
@@ -224,6 +221,7 @@ public class GridManager : MonoBehaviour
         return newLine;
     }
 
+    /// <summary> Create TextMeshPro object to display numbers in each grid squares</summary>
     private void GenerateGridTMPro()
     {
         if (!gridTMProExist)
@@ -253,6 +251,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    /// <summary> Toggle TextMeshPro and GridLines objects</summary>
     public void ToggleGridHelper()
     {
         if(gridLinesExist && gridTMProExist)
@@ -270,13 +269,15 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void DeleteGrid()
+    /// <summary> For each gridpoints, destroy it's tile"/> </summary>
+    public void DestroyTiles()
     {
         for (int i = 0; i < col * row; i++) 
         {
-            gridPoints[i].tileState = GridPoints.TileState.walkable;
-            gridPoints[i].moveCost = 0;
-            Destroy(gridPoints[i].tile);
+            if(gridPoints[i].tile != null) 
+            {
+                Destroy(gridPoints[i].tile);
+            }
         }
     }
 
@@ -332,9 +333,20 @@ public class GridManager : MonoBehaviour
         return targetUID;
     }
 
+    public void DeleteSaveFile()
+    {
+        if (File.Exists(Application.dataPath + "/saveFile.json")) 
+        {
+            File.Delete(Application.dataPath + "/saveFile.json");
+            File.Delete(Application.dataPath + "/saveFile.json.meta");
+        }
+    }
+
     public void SaveGridDatatoJson()
     {
-        if (File.Exists(Application.dataPath + "/saveFile.json")) File.Delete(Application.dataPath + "/saveFile.json");
+        File.Delete(Application.dataPath + "/saveFile.json");
+        File.Delete(Application.dataPath + "/saveFile.json.meta");
+
         string toJson = JsonHelper.ToJson(gridPoints, true);
         File.WriteAllText(Application.dataPath + "/saveFile.json", toJson);
     }
@@ -344,7 +356,7 @@ public class GridManager : MonoBehaviour
         string fromJson = File.ReadAllText(Application.dataPath + "/saveFile.json");
         GridPoints[] gridPoints = JsonHelper.FromJson<GridPoints>(fromJson);
 
-        DeleteGrid();
+        DestroyTiles();
         LoadTiles();
     }
 

@@ -19,7 +19,7 @@ public class CustomInspectors : Editor
         GUILayout.Space(58);
         if (GUILayout.Button("<<", GUILayout.ExpandWidth(false)))
         {
-            //
+            //TODO
         }
         GUILayout.Space(58);
         GUILayout.EndVertical();
@@ -30,7 +30,7 @@ public class CustomInspectors : Editor
         GUILayout.Space(58);
         if (GUILayout.Button(">>", GUILayout.ExpandWidth(false)))
         {
-            //
+            //TODO
         }
         GUILayout.Space(58);
         GUILayout.EndVertical();
@@ -55,9 +55,13 @@ public class CustomInspectors : Editor
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Delete Grid", GUILayout.ExpandWidth(false)))
+        if (GUILayout.Button("Destroy Tiles", GUILayout.ExpandWidth(false)))
         {
-            gridManager.DeleteGrid();
+            gridManager.DestroyTiles();
+        }
+        if (GUILayout.Button("Dlt Save",GUILayout.ExpandWidth(false)))
+        {
+            gridManager.DeleteSaveFile();
         }
         if (GUILayout.Button("Save Grid", GUILayout.ExpandWidth(false)))
         {

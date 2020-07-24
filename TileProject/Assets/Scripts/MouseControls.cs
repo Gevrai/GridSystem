@@ -4,7 +4,7 @@ using UnityEngine;
 
 /* MERGE WITH GRID MANAGER?
  * Shold this be merged with the grid manager? I split those up because they have inputs check within them.
- * If I wa using the new Unity input system which uses action and remove the need to check for input within the update loop,
+ * If I was using the new Unity input system which uses action and remove the need to check for input within the update loop,
  * I would have definitely never made up two classes.
 */
 
@@ -12,7 +12,7 @@ public class MouseControls : MonoBehaviour
 {
     private GridManager gridManager;
     private bool isWithinGrid, isHoldingTile;
-    private Vector3 clickPosition, initialTilePos, currMousePos;
+    private Vector3 clickPos, initialTilePos, currMousePos;
     private GameObject selectedTile;
     private int originUID, targetUID;
     private float gridPointWidth, gridPointHeight;
@@ -29,20 +29,20 @@ public class MouseControls : MonoBehaviour
 
     void Update()
     {
-        OnDragAndDrop(Input.GetMouseButtonDown(0));
+        OnMouseDown(Input.GetMouseButtonDown(0));
         OnPaint(Input.GetKeyDown(KeyCode.Space));
         OnMouseHold(Input.GetMouseButton(0));
-        OnRelease(Input.GetMouseButtonUp(0));
+        OnMouseRelease(Input.GetMouseButtonUp(0));
     }
 
-    private void OnDragAndDrop(bool mouseDown)
+    private void OnMouseDown(bool mouseDown)
     {
         if(mouseDown)
         {
-            clickPosition = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
+            clickPos = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
             if(isWithinGrid)
             {
-                originUID = WorldPosToGridPoint(clickPosition, gridPointWidth, gridPointHeight);
+                originUID = WorldPosToGridPoint(clickPos, gridPointWidth, gridPointHeight);
                 if (gridManager.gridPoints[originUID].tile != null)
                 {
                     isHoldingTile = true;
@@ -60,10 +60,10 @@ public class MouseControls : MonoBehaviour
     {
         if(spaceDown)
         {
-            clickPosition = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
+            clickPos = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
             if(isWithinGrid)
             {
-                int targetUID = WorldPosToGridPoint(clickPosition, gridPointWidth, gridPointHeight);
+                int targetUID = WorldPosToGridPoint(clickPos, gridPointWidth, gridPointHeight);
                 gridManager.GenerateNewTile(1, targetUID);
             }
         }
@@ -74,12 +74,12 @@ public class MouseControls : MonoBehaviour
         if(mouseHeld && isHoldingTile)
         {
             Vector3 currMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 targetPos = currMousePos + (initialTilePos - clickPosition); // Apply ofset so tiles are not held by corner
+            Vector3 targetPos = currMousePos + (initialTilePos - clickPos); // Apply ofset so tiles are not held by corner
             selectedTile.GetComponent<Transform>().position = new Vector3(targetPos.x, 1, targetPos.z); // Drag tile and put in front of others
         }
     }
 
-    private void OnRelease(bool mouseReleased)
+    private void OnMouseRelease(bool mouseReleased)
     {
         if(mouseReleased && isHoldingTile)
         {
@@ -95,6 +95,7 @@ public class MouseControls : MonoBehaviour
                 {
                     // Move tile object
                     gridManager.gridPoints[targetUID].tile = selectedTile;
+                    gridManager.gridPoints[targetUID].identity = gridManager.gridPoints[originUID].identity;
                     gridManager.gridPoints[originUID].tile = null;
 
                     TiletoGridPos(selectedTile, targetUID);
@@ -134,8 +135,8 @@ public class MouseControls : MonoBehaviour
             Debug.Log("Mouse position is outside of the grid: " + position);
             isMousePosValid = false;
         }
-        else 
-        { 
+        else
+        {
             isMousePosValid = true;
         }
         return position;

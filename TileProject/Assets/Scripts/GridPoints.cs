@@ -13,10 +13,7 @@ public class GridPoints
     public GameObject tile;
     public Vector3 position;
 
-    // From scriptable tile
-    public enum TileState { walkable, blocked }
-    public TileState tileState;
-    public float moveCost;
+    ScriptableTile scriptableTile;
 
     public GridPoints(GridManager gridManager, int gridUID, int col, int row, float sprWidth, float sprHeight)
     {
@@ -34,12 +31,8 @@ public class GridPoints
     }
 
     /// <summary> Get scriptable tile script and load up all values to grid point object</summary>
-    public void SetupScriptableTileParams()
+    public void RefreshScriptableTile()
     {
-        ScriptableTile scriptableTile = gridManager.ReferenceTiles[identity].GetComponent<ScriptableTile>();
-        tileState = (GridPoints.TileState)scriptableTile.tileState;
-        moveCost = scriptableTile.moveCost;
+        scriptableTile = gridManager.ReferenceTiles[identity].GetComponent<ScriptableTile>();
     }
-
-    
 }
