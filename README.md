@@ -1,2 +1,3 @@
 # GridSystem
-A generic grid system for plug and play uses in Unity
+
+A generic 2 dimentional grid system that will be used to prototype game design ideas.
