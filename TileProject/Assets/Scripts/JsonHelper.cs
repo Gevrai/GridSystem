@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Instead of having something like this that only does Json, I would create a generic interface for serialization so that when you'd want to switch from json it would be self contained
+
+public interface GridSerializer<T> {
+    byte[] Serialize(GridManager<T> grid);
+    Grid<T> Unserialize(byte[] bytes);
+}
+
 public static class JsonHelper
 {
     public static T[] FromJson<T>(string json)

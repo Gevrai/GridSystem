@@ -39,6 +39,7 @@ public class MouseControls : MonoBehaviour
     {
         if(mouseDown)
         {
+            // WOW in, out, ref paramaters are pretty nice! go csharp!
             clickPos = GetMousePos(Camera.main, gridPointWidth, gridPointHeight, out isWithinGrid);
             if(isWithinGrid)
             {

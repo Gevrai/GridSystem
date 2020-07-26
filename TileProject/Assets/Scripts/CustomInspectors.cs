@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// Too much repeated logic here, there is probably a cleaner way to do this? Or maybe UI stuff is doomed to be FILTHY :)
 
 [CustomEditor(typeof(GridManager))]
 public class CustomInspectors : Editor

@@ -13,31 +13,42 @@ using TMPro;
  * Support multiple select
  * Add character controller and wasd movements on grid
  *
- *
- *
- * 
+ * Gevrai's comments
+ *  - Separation of concern:
+ *         - Grid management logic should be separated from displaying logic
+ *              - Stuff such as sprites metadata, textures, materials, etc probably has no place in grid manager class
+ *         - Grid should be an easy to use object with methods such as Get(i,j) or Set(i,j, tile). Underlying logic (2D matrix as a 1D array) should be hidden
+ *         - If logic repeats, should probably be a function
+ *         - If block is hard to understand, should probably be a function with explicit name
+ *         - Use 'this' for member func/fields ? (maybe not classic in CSharp, I don't know...)
+ *  - Cache stuff you will reuse
+ *  - Try to do some Unit testing! it is well worth it IMHO (good luck :P)
  * */
 
 public class GridManager : MonoBehaviour
 {
+    private static Material MATERIAL_UNLIT_BLACKLINE = new Material(Shader.Find("Unlit/UnlitBlackLine"));
+
+    public enum GridPointDirection {
+        UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT 
+    }
+
+    private bool gridExist;
     private List<GameObject> gridLines = new List<GameObject>();
     private List<GameObject> gridTMPro = new List<GameObject>();
+    public int col, row;
+
     private GameObject[] referenceTiles;
-    private bool gridExist;
     private float spriteWidth, spriteHeight;
     private Camera cam;
     private UnityEvent shareGridMetrics;
-    private bool gridLinesExist;
-    private bool gridTMProExist;
 
     [Header("A prefab name in the ressource folder")]
     public GameObject baseTile;
-    public int col, row;
     [Range(0.0f, 1.0f)] public float tileSpawnChance = 1.0f;
     [Header("Scriptable tile objects for grid generation")]
     public List<ScriptableTile> scriptableTiles;
     public GridPoints[] gridPoints;
-
     [HideInInspector]
     public Texture texture;
 
@@ -69,13 +80,15 @@ public class GridManager : MonoBehaviour
         else Debug.Log("Grid already exist, aborting grid generation");
     }
 
+    // NOTE: GenerateTiles and LoadTiles are too similar, should refactor
+
     public void GenerateTiles()
     {
         DestroyTiles();
         GenerateRefTiles();
         for (int i = 0; i < gridPoints.Length; i++)
         {
-            gridPoints[i].containsTile = (Random.Range(0.0f, 1.0f) < tileSpawnChance) ? true : false;
+            gridPoints[i].containsTile = tileSpawnChance > Random.Range(0.0f, 1.0f)
             if (gridPoints[i].containsTile)
             {
                 gridPoints[i].identity = Random.Range(0, 3); // TEMPORARY, AUTOMATICALLY GEN VARIED TILE
@@ -179,38 +192,34 @@ public class GridManager : MonoBehaviour
             GridLineHolder.name = "GridLineHolder";
 
             int ID = 0;
-            for (int i = 0; i < col + 1; i++)
+            for (int i = 0; i < this.col + 1; i++)
             {
                 ID++;
-                GameObject newLine = DrawLine(new Vector3(i * spriteWidth, -1.0f, 0.0f), new Vector3(i * spriteWidth, -1.0f, row * -spriteHeight), Color.black, 0.020f, ID, GridLineHolder.transform);
+                var orig = new Vector3(i * spriteWidth, -1.0f, 0.0f)
+                var dest = new Vector3(i * spriteWidth, -1.0f, row * -spriteHeight)
+                GameObject newLine = DrawLine(orig, dest, Color.black, 0.020f, ID, GridLineHolder.transform);
                 gridLines.Add(newLine);
             }
-            for (int i = 0; i < row + 1; i++)
+            for (int i = 0; i < this.row + 1; i++)
             {
                 ID++;
-                GameObject newLine = DrawLine(new Vector3(0.0f, -1.0f, i * -spriteHeight), new Vector3(col * spriteWidth, -1.0f, i * -spriteHeight), Color.black, 0.020f, ID, GridLineHolder.transform);
+                var orig = new Vector3(0.0f, -1.0f, i * -spriteHeight)
+                var dest = new Vector3(col * spriteWidth, -1.0f, i * -spriteHeight)
+                GameObject newLine = DrawLine( orig, dest, Color.black, 0.020f, ID, GridLineHolder.transform);
                 gridLines.Add(newLine);
             }
         }
     }
 
-    private GameObject DrawLine(Vector3 start, Vector3 end, Color color, float width, int ID, Transform parent)
+    private GameObject DrawLine(Vector3 start, Vector3 end, Color color, float width, Transform parent)
     {
-        GameObject newLine = new GameObject();
+        var newLine = new GameObject();
         newLine.transform.SetParent(parent);
-
-        // TODO : To function
-        if (ID < 10)
-            newLine.name = "GridLine" + "_" + "00" + ID.ToString();
-        else if (ID < 100)
-            newLine.name = "GridLine" + "_" + "0" + ID.ToString();
-        else
-            newLine.name = "GridLine" + "_" + ID.ToString();
 
         newLine.transform.position = start;
         newLine.AddComponent<LineRenderer>();
-        LineRenderer lr = newLine.GetComponent<LineRenderer>();
-        lr.material = new Material(Shader.Find("Unlit/UnlitBlackLine"));
+        var lr = newLine.GetComponent<LineRenderer>();
+        lr.material = MATERIAL_UNLIT_BLACKLINE;
         lr.startColor = color;
         lr.endColor = color;
         lr.startWidth = width;
@@ -233,19 +242,10 @@ public class GridManager : MonoBehaviour
 
             for (int i = 0; i < gridPoints.Length; i++)
             {
-                GameObject TMPro = (GameObject)Instantiate(Resources.Load("TextMesh"), GridTMProHolder.transform);
-
-                // TODO : To function
-                if(i < 10)
-                    TMPro.name = "TMPro" + "_" + "00" + i.ToString();
-                else if(i < 100)
-                    TMPro.name = "TMPro" + "_" + "0" + i.ToString();
-                else 
-                    TMPro.name = "TMPro" + "_" + i.ToString();
-
+                // TODO cache textmesh
+                var TMPro = (GameObject)Instantiate(Resources.Load("TextMesh"), GridTMProHolder.transform);
                 TMPro.transform.position = new Vector3(gridPoints[i].position.x + spriteWidth / 2, 1.0f, gridPoints[i].position.z - spriteHeight / 2); ;
                 TMPro.GetComponent<TextMeshPro>().text = i.ToString();
-
                 gridTMPro.Add(TMPro);
             }
         }
@@ -254,19 +254,8 @@ public class GridManager : MonoBehaviour
     /// <summary> Toggle TextMeshPro and GridLines objects</summary>
     public void ToggleGridHelper()
     {
-        if(gridLinesExist && gridTMProExist)
-        {
-            if(gridLines[0].activeInHierarchy == true)
-            {
-                foreach (GameObject line in gridLines) line.SetActive(false);
-                foreach (GameObject TMPro in gridTMPro) TMPro.SetActive(false);
-            }
-            else
-            {
-                foreach (GameObject line in gridLines) line.SetActive(true);
-                foreach (GameObject TMPro in gridTMPro) TMPro.SetActive(true);
-            }
-        }
+        gridlines.forEach( el => el.SetActive(!el.activeInHierarchy) );
+        gridTMPro.forEach( el => el.SetActive(!el.activeInHierarchy) );
     }
 
     /// <summary> For each gridpoints, destroy it's tile"/> </summary>
@@ -281,56 +270,50 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public int FindGridPointNeighbour(int i, string direction)
+    public int FindGridPointNeighbour(int i, int j, GridPointDirection direction)
     {
-        int targetUID = 0;
+        // Grid points is nice to be a 1D array, but should be wrapped in an easy to use (and understand) class.
+        if (gridpoints.IsOutside(i)) {
+            return null;
+        }
+
         switch (direction)
         {
-            case "up":
+            case UP:
                 if (gridPoints[i].UID - col >= 0)
-                    targetUID = gridPoints[i - col].UID;
+                    // Why return the UID, and not the gripoint itself ??
+                    return gridPoints[i - col].UID;
                 break;
-
-            case "down":
+            case DOwN:
                 if (gridPoints[i].UID + col <= gridPoints.Length)
-                    targetUID = gridPoints[i + col].UID;
+                    return gridPoints[i + col].UID;
                 break;
-
-            case "left":
+            case LEFT:
                 if (gridPoints[i].UID - 1 >= 0 && i % col != 0)
-                    targetUID = gridPoints[i - 1].UID;
+                    return gridPoints[i - 1].UID;
                 break;
-
-            case "right":
+            case RIGHT:
                 if (gridPoints[i].UID + 1 <= gridPoints.Length && i % col != col - 1)
-                    targetUID = gridPoints[i + 1].UID;
+                    return gridPoints[i + 1].UID;
                 break;
-
-            case "upLeft":
+            case UP_LEFT:
                 if (gridPoints[i].UID - col - 1 >= 0 && i % col != 0)
-                    targetUID = gridPoints[i - col - 1].UID;
+                    return gridPoints[i - col - 1].UID;
                 break;
-
-            case "upRight":
+            case UP_RIGHT:
                 if (gridPoints[i].UID - col + 1 >= 0 && i % col != col - 1)
-                    targetUID = gridPoints[i - col + 1].UID;
+                    return gridPoints[i - col + 1].UID;
                 break;
-
-            case "downLeft":
+            case DOWN_LEFT:
                 if (gridPoints[i].UID + col - 1 <= gridPoints.Length && i % col != 0)
-                    targetUID = gridPoints[i + col - 1].UID;
+                    return gridPoints[i + col - 1].UID;
                 break;
-
-            case "downRight":
+            case DOWN_RIGHT:
                 if (gridPoints[i].UID + col + 1 <= gridPoints.Length && i % col != col - 1)
-                    targetUID = gridPoints[i + col + 1].UID;
-                break;
-
-            default:
-                targetUID = -1;
+                    return gridPoints[i + col + 1].UID;
                 break;
         }
-        return targetUID;
+        return -1;
     }
 
     public void DeleteSaveFile()
@@ -342,6 +325,10 @@ public class GridManager : MonoBehaviour
         }
     }
 
+
+    // While there are definitely some ways better fitted for exporting this grid data, I must say I like that Json is very easy to use and maintainable.
+    // However, I would look into some way to save a binary in the future (near project completion) since json isn't well fitted for repeating structures (array of similar objects)
+    // CSharp (or mono/Unity) most probably has some binary formatter easy to use
     public void SaveGridDatatoJson()
     {
         File.Delete(Application.dataPath + "/saveFile.json");
@@ -366,10 +353,3 @@ public class GridManager : MonoBehaviour
     public GameObject[] ReferenceTiles { get { return referenceTiles; } }
     #endregion
 }
-
-/*
-GameObject textMesh = (GameObject)Instantiate(Resources.Load("TextMesh"), transform);
-textMesh.name = "TMPro" + i.ToString();
-textMesh.transform.position = new Vector3(gridPoints[i].position.x + spriteWidth/2, 0.0f, gridPoints[i].position.z - spriteHeight/2);;
-textMesh.GetComponent<TextMeshPro>().text = i.ToString();
-*/

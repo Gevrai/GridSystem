@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// I don't understand what's happening here, must be some Unity specific stuff I'm guessing?
+
 [CreateAssetMenu(fileName = "NewtTile", menuName = "Create tile")]
 public class ScriptableTile : ScriptableObject
 {
